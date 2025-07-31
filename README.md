@@ -42,7 +42,7 @@ This project analyzes HR data from a fictional car dealership company called **S
 ```bash
 python_Salifort_Motors/
 ├── data/                    # Raw HR dataset (CSV/Excel)
-├── salifort_motors_analysis.ipynb  # Main analysis notebook
+├── HR Analysis  # Main analysis notebook
 ├── outputs/                 # Visualizations (images, plots)
 ├── README.md                # Project description (this file)
 └── requirements.txt         # (Optional) List of Python packages used
