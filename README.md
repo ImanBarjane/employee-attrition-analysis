@@ -5,7 +5,7 @@ A data analysis project for a fictional car dealership company (Salifort Motors)
 
 ---
 
-## 📌 Summary (English)
+## 📌 Summary
 
 This project analyzes HR data from a fictional car dealership company called **Salifort Motors**, with the goal of identifying why employees leave and what factors influence attrition.
 
@@ -21,7 +21,7 @@ This project analyzes HR data from a fictional car dealership company called **S
 
 ---
 
-## 📌 خلاصه (فارسی)
+## 📌 خلاصه
 
 در این پروژه، داده‌های منابع انسانی شرکت فرضی «Salifort Motors» با استفاده از زبان برنامه‌نویسی پایتون تحلیل شده است. هدف پروژه، بررسی دلایل ترک شغل کارکنان و ارائه‌ی بینش‌هایی برای بهبود ماندگاری و رضایت شغلی کارکنان است.
 
