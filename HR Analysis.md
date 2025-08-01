@@ -391,20 +391,26 @@ df0.describe()
 
 
 
-The description indicates the following:
+The descriptive statistics reveal several insights:
 
-1. All counts are the same (14999), which means there are no missing values.
-2. The minimum of `satisfaction_level` indicates that there are some employees who are not happy with their job. However, the mean of this column indicates that overall employees are roughly satisfied with their job.
-3. The mean of `last_evaluation` indicates that, overall, employees are performing well.
-4. The mean of `average_monthly_hours` shows that employees work an average of 210 hours per month, which is higher than the normal working hours of 175 hours.
-5. All employees worked at the company for at least 2 years; hence, there are no interns in the data.
-6. The rate of `Work_accident` is 14%. While this rate might seem low at first glance, workplace accidents can be serious or even lethal. Hence, the HSSE (Health, Safety, Security, and Environment) department needs to come up with plans to reduce this rate.
-7. In every 100 employees, 24 of them left the company. This is an alert for the company.
-8. The promotion rate is low. Although the satisfaction level of employees is high, they did not get enough promotions to encourage them.
+1. All variables have 14,999 entries, which means there are no missing values.
+2. Some employees are completely dissatisfied with their job (`satisfaction_level` = 0). However, the average satisfaction (~0.61) shows moderate overall satisfaction.
+3. The average of `last_evaluation` (~0.72) suggests decrease in average of employees satisfaction.
+4. Employees work about 210 hours per month on average, which is higher than the standard 175 hours.
+5. No employee has less than 2 years of experience at the company, suggesting that interns or short-term workers are not included.
+6. Around 14% of employees experienced a work accident. This is a concern that the HSSE department should address.
+7. About 24% of employees have left the company. This attrition rate is high enough to be investigated.
+8. The promotion rate is low, although the satisfaction level of employees is high, they did not get enough promotions to encourage them which may contribute to employee dissatisfaction and turnover.
 
-### Renaming columns
+---
 
-As a data cleaning step, let's rename the columns as needed. This involves standardizing the column names so that they are all in `snake_case`, correcting any misspelled column names, and making column names more concise as needed. `Snake_case` is a variable naming convention where each word is in lower case and separated by underscores.
+### Renaming Columns
+
+To clean and standardize the dataset, we'll rename the columns using `snake_case` for consistency.
+
+
+
+
 
 
 ```python
@@ -447,9 +453,9 @@ df0.columns
 
 
 
-### Checking for missing values
+### Checking for Missing Values
 
-We already know that there are no missing values. But it's worth checking for any missing values anyway.
+Although the dataset appears to be complete, it's a good practice to verify that there are no missing values in any of the columns.
 
 
 ```python
@@ -475,9 +481,9 @@ df0.isna().sum()
 
 
 
-### Checking for duplicates
+### Checking for Duplicates
 
-Now let's check for any duplicate entries in the data.
+To ensure data quality, let's check if there are any duplicate rows in the dataset.
 
 
 ```python
@@ -493,7 +499,7 @@ df0.duplicated().sum()
 
 
 
-The output shows that there are 3,008 rows containing duplicates. That is 20% of the data.
+The output shows that there are 3,008 duplicate rows, which makes up 20% of the dataset. This is a significant portion and can affect the quality of our analysis if not addressed.
 
 
 ```python
@@ -687,7 +693,7 @@ df0_duplicated
 
 
 
-The output shows the first five occurrences of rows that are duplicated farther down in the dataframe. How likely is it that these are legitimate entries? In other words, how plausible is it that two employees self-reported the exact same response for every column? With several continuous variables across 10 columns, it seems very unlikely that these observations are legitimate. Let's proceed by dropping them. But first, I want to check if we drop the duplicates, is the dataset going to be imbalanced.
+The output displays the first five instances of rows that are duplicated elsewhere in the dataset. How likely is it that these entries are legitimate? In other words, is it plausible that two employees provided identical responses across all 10 variables, including multiple continuous features? Given this level of similarity, such duplicates appear highly improbable. Therefore, it is reasonable to assume they are unintentional and should be removed. However, before dropping them, we should verify whether doing so would significantly affect the class balance of the target variable.
 
 
 ```python
@@ -704,7 +710,7 @@ df0_duplicated['left'].value_counts()
 
 
 
-This shows that both classes have fairly similar duplicates.
+This indicates that both classes in the target variable are similarly represented among the duplicate rows. As a result, removing them is unlikely to introduce class imbalance in the dataset.
 
 
 ```python
