@@ -1,52 +1,66 @@
-# **Capstone project: Providing data-driven suggestions for HR**
+# 📊 Capstone Project: Data-Driven Insights for HR Decision-Making
 
-## Description and deliverables
+## 🧩 Project Overview
 
-This is my case study project for the [Google Advanced Data Analytics Professional Certificate published by coursera](https://www.coursera.org/professional-certificates/google-advanced-data-analytics). In this capstone project, I will analyze a dataset and build predictive models that can provide insights to the Human Resources (HR) department of a large consulting firm.
-My deliverables will include model evaluation (and interpretation if applicable), data visualizations directly related to the question asked, ethical considerations, and a list of resources I used to troubleshoot and find answers or solutions.
+This project is part of the [Google Advanced Data Analytics Professional Certificate on Coursera](https://www.coursera.org/professional-certificates/google-advanced-data-analytics).  
+It focuses on analyzing a real-world HR dataset to identify key factors affecting employee attrition and to help the Human Resources (HR) department of a large consulting firm make informed, data-driven decisions.
 
+## 🎯 Objectives
+
+- Explore and clean the HR dataset
+- Identify patterns and relationships associated with employee attrition
+- Build predictive models to estimate the probability of employee turnover
+- Create insightful visualizations to support strategic HR planning
+- Discuss ethical considerations and data limitations
+
+## 📦 Deliverables
+
+- Cleaned and well-documented dataset
+- Exploratory Data Analysis (EDA) and visualizations
+- Predictive modeling and model evaluation
+- Key findings and recommendations for the HR department
+- Ethical reflections and resource documentation
 
 # **PACE stages**
 
 ![pace](https://github.com/ImanBrjn/python_Salifort_Motors/assets/140934258/1ecb8a7a-4c24-4eb6-83d2-801e3588269b)
 
+## 🧭 PACE: Plan
 
-## **Pace: Plan**
+### 🧠 Understanding the Business Scenario and Problem
 
-Considering the questions in the PACE Strategy Document to reflect on the Plan stage, I will consider the following:
+The HR department at *Salifort Motors* seeks to improve employee retention by understanding the key factors contributing to employee turnover. Rather than predicting which specific employees might leave, the focus of this project is to explore the dataset, uncover patterns, and identify the main drivers behind employee attrition.
 
-### Understanding the business scenario and problem
+By analyzing trends in the HR data—such as job satisfaction, department, years at company, salary level, and performance metrics—the company aims to take proactive, data-driven actions that address the root causes of employee dissatisfaction. These insights can help reduce turnover, improve morale, and lower recruitment costs in the long term.
 
-The HR department at Salifort Motors wants to improve employee satisfaction levels by leveraging the collected data. They seek data-driven suggestions to understand what factors may contribute to employees leaving the company. My goal in this project is to analyze the provided data and build a predictive model to identify employees who are likely to quit. By predicting potential departures, the company can take proactive measures to address contributing factors and improve employee retention. This approach aims to save time and resources associated with recruiting and hiring new employees.
+## 🗂️ Dataset Overview
 
-If I can predict employees likely to quit, it might be possible to identify factors that contribute to their leaving. Because it is time-consuming and expensive to find, interview, and hire new employees, increasing employee retention will be beneficial to the company..
+The dataset used in this project contains **15,000 rows** and **10 variables** related to employee behavior, performance, and organizational context at *Salifort Motors*. It serves as the foundation for understanding **why employees may leave the company**, and what patterns distinguish those who leave from those who stay.
 
-Identifying employees likely to quit through predictive modeling can help uncover the contributing factors to their departure. Given the time-consuming and costly nature of finding, interviewing, and hiring new employees, improving employee retention would be advantageous for the company.
+> 📌 Source: [Kaggle - HR Analytics and Job Prediction Dataset](https://www.kaggle.com/datasets/mfaisalqureshi/hr-analytics-and-job-prediction?select=HR_comma_sep.csv)
 
-### Familiarizing with the HR dataset
+| Variable | Description |
+|----------|-------------|
+| `satisfaction_level` | Employee-reported job satisfaction level *(scale: 0 to 1)* |
+| `last_evaluation` | Score from the most recent performance evaluation *(scale: 0 to 1)* |
+| `number_project` | Number of active projects the employee worked on |
+| `average_monthly_hours` | Average number of hours worked per month |
+| `time_spend_company` | Tenure with the company (in years) |
+| `Work_accident` | Whether the employee had a work-related accident *(0 = No, 1 = Yes)* |
+| `left` | Whether the employee left the company *(1 = Yes, 0 = No)* |
+| `promotion_last_5years` | Promotion received in the last 5 years *(0 = No, 1 = Yes)* |
+| `Department` | Department or job role of the employee |
+| `salary` | Salary category *(low, medium, high)* |
 
-The dataset for this case study comprises 15,000 rows and includes 10 columns corresponding to the following variables. 
+This dataset allows for a range of analytical tasks including:
 
-**Note:** For more information about the data, refer to its source on [Kaggle](https://www.kaggle.com/datasets/mfaisalqureshi/hr-analytics-and-job-prediction?select=HR_comma_sep.csv).
+- Comparing characteristics of employees who left vs those who stayed
+- Exploring trends in satisfaction, workload, and promotions
+- Identifying high-risk groups or roles with elevated turnover
 
-Variable  |Description |
------|-----|
-satisfaction_level|Employee-reported job satisfaction level [0&ndash;1]|
-last_evaluation|Score of employee's last performance review [0&ndash;1]|
-number_project|Number of projects employee contributes to|
-average_monthly_hours|Average number of hours employee worked per month|
-time_spend_company|How long the employee has been with the company (years)
-Work_accident|Whether or not the employee experienced an accident while at work
-left|Whether or not the employee left the company
-promotion_last_5years|Whether or not the employee was promoted in the last 5 years
-Department|The employee's department
-salary|The employee's salary (U.S. dollars)
+## Step 1: Importing Required Libraries
 
-
-## Step 1. Imports
-
-*   First let's import requaired packages.
-
+We start by importing the necessary Python packages for data manipulation, visualization, and basic machine learning analysis.
 
 ### Importing packages
 
@@ -66,10 +80,6 @@ import seaborn as sns
 pd.set_option('display.max_columns', None)
 
 # For data modeling
-from xgboost import XGBClassifier
-from xgboost import XGBRegressor
-from xgboost import plot_importance
-
 from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
@@ -85,10 +95,9 @@ from sklearn.tree import plot_tree
 import pickle
 ```
 
-### Load dataset
+## Step 2: Loading the Dataset
 
-The dataset named **`HR_capstone_dataset.csv`** is read using the `Pandas` library. 
-
+We load the HR dataset into a Pandas dataframe for exploration and analysis.
 
 ```python
 
@@ -207,12 +216,9 @@ df0.head()
 
 
 
-## Step 2. Data Exploration (Initial EDA and data cleaning)
+## Step 3: Data Exploration and Cleaning
 
-Now that the data has been loaded, it's time to understand the variables and clean the dataset.
-
-
-
+In this step, we will perform an initial exploration of the dataset to understand its structure, detect any missing values or anomalies, and prepare it for analysis.
 
 ```python
 # Gather basic information about the data
@@ -241,7 +247,17 @@ df0.info()
 
 The info indicates that `Department` and `salary` are objects, which might be categorical variables. We will figure that out later. Additionally, it shows that there are no missing values in the dataset.
 
-### Gathering descriptive statistics about the data
+### Descriptive Statistics
+
+Next, we will generate descriptive statistics to understand the distribution of numerical features in the dataset.
+
+This helps identify:
+- the central tendencies (mean, median),
+- data dispersion (standard deviation, range),
+- potential outliers (via min/max),
+- and skewness in certain variables.
+
+We will also take a closer look at how these features relate to the attrition variable (`left`).
 
 
 ```python
@@ -1709,7 +1725,7 @@ Specifing path to save the model.
 
 ```python
 # Define a path to save the model
-path = '/home/jovyan/work/'
+path = '/home/project/hr_analysis/'
 ```
 
 Defineing functions to pickle the model and read in the model.
@@ -2763,3 +2779,11 @@ To retain employees, the following recommendations could be presented to the sta
 
 
 **Thank you for taking the time to read my Capstone Project!**
+
+
+## 🔗 Resources and Troubleshooting
+- Stack Overflow
+- pandas documentation
+- seaborn official site
+- Google search for syntax/debugging
+
