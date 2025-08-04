@@ -25,9 +25,9 @@ It focuses on analyzing a real-world HR dataset to identify key factors affectin
 
 ![pace](https://github.com/ImanBrjn/python_Salifort_Motors/assets/140934258/1ecb8a7a-4c24-4eb6-83d2-801e3588269b)
 
-## 🧭 PACE: Plan
+## 🧭 Pace: Plan
 
-### 🧠 Understanding the Business Scenario and Problem
+### Understanding the Business Scenario and Problem
 
 The HR department at *Salifort Motors* seeks to improve employee retention by understanding the key factors contributing to employee turnover. Rather than predicting which specific employees might leave, the focus of this project is to explore the dataset, uncover patterns, and identify the main drivers behind employee attrition.
 
@@ -850,11 +850,11 @@ plt.show()
 ![output_38_0](https://github.com/ImanBrjn/python_Salifort_Motors/assets/140934258/05a4214c-0fc5-4a42-a68b-1f76274ded5d)   
 
 
-The boxplot above shows that there are outliers in the `tenure` variable. It would be helpful to investigate how many rows in the data contain outliers in the `tenure` column.   
+The boxplot above reveals the presence of outliers in the `tenure` variable. To better understand the impact of these outliers, it is useful to investigate how many rows in the dataset contain unusually high `tenure` values.
 
-In this capstone project, I will analyze a dataset and build predictive models that can provide insights to the Human Resources (HR) department of a large consulting firm.   
+As part of this capstone project, I will analyze an HR dataset to uncover insights that can help the Human Resources (HR) department of a large consulting firm.
 
-In my deliverables, I will include the model evaluation (and interpretation if applicable), a data visualization(s) which is directly related to the question asked, ethical considerations, and the resources I used to troubleshoot and find answers or solutions.
+My deliverables will include model evaluation (along with interpretation where applicable), data visualizations directly related to the core analytical questions, ethical considerations, and a list of resources I referenced to solve problems or explore concepts during the project.
 
 
 ```python
@@ -889,15 +889,14 @@ print("Number of rows in the data containing outliers in `tenure`:", len(outlier
     Number of rows in the data containing outliers in `tenure`: 824
 
 
-Certain types of models are more sensitive to outliers than others. When we get to the stage of building a model, we should consider whether to remove outliers based on the type of model we decide to use.
+Certain types of models are more sensitive to outliers than others. When we begin building predictive models, we should carefully consider whether to remove outliers based on the assumptions and robustness of the chosen algorithm.
 
-# pAce: Analyze Stage
-- Performing EDA (analyze relationships between variables)
+## 📊 pAce: Analyze Stage
+- Performing Exploratory Data Analysis (EDA) to examine relationships between variables
 
+## Step 2. Continued Data Exploration
 
-## Step 2. Data Exploration (Continue EDA)
-
-Beginning by understanding how many employees left and what percentage of all employees this figure represents.
+To begin the analysis, let’s first understand how many employees left the company and what percentage they represent out of the total workforce.
 
 
 ```python
@@ -918,13 +917,14 @@ print(df1['left'].value_counts(normalize=True))
     Name: left, dtype: float64
 
 
-### Data visualizations
+### Data Visualizations
 
-Now, let's examine variables and create plots to visualize relationships between variables in the data.   
-   
-Start by creating a stacked boxplot showing the distribution of `average_monthly_hours` for different `number_project` categories, comparing the distributions of employees who stayed versus those who left.   
+Now, let's explore the variables by creating plots that help visualize relationships between key features in the dataset.
 
-Box plots are very useful in visualizing distributions within data, but they can be deceiving without the context of how big the sample sizes that they represent are. So, we could also plot a stacked histogram to visualize the distribution of `number_project` for those who stayed and those who left.
+We will begin by creating a **stacked boxplot** to examine the distribution of `average_monthly_hours` across different `number_project` categories. This plot will allow us to compare the working hours of employees who stayed versus those who left the company.
+
+Boxplots are a powerful tool for visualizing the distribution and spread of continuous variables. However, they may not always convey the underlying sample size in each category. To supplement this, we will also generate a **stacked histogram** showing the distribution of `number_project` for employees who stayed versus those who left. This will pro_
+
 
 
 ```python
@@ -953,17 +953,34 @@ plt.show()
 
 
 
-It might be natural that people who work on more projects would also work longer hours. This appears to be the case here, with the mean hours of each group (stayed and left) increasing with the number of projects worked. However, a few things stand out from this plot.   
-   
-1. There are two groups of employees who left the company: (A) those who worked considerably less than their peers with the same number of projects, and (B) those who worked much more. Of those in group A, it's possible that they were fired. It's also possible that this group includes employees who had already given their notice and were assigned fewer hours because they were already on their way out the door. For those in group B, it's reasonable to infer that they probably quit. The folks in group B likely contributed a lot to the projects they worked in; they might have been the largest contributors to their projects.
 
-2. Everyone with seven projects left the company, and the interquartile ranges of this group and those who left with six projects were ~255–295 hours/month—much more than any other group.
+It may seem intuitive that employees assigned to more projects also tend to work longer hours. This trend is reflected in the data, where the **average monthly hours increase** with the number of projects for both employees who stayed and those who left. However, several important patterns emerge from the boxplot:
 
-3. The optimal number of projects for employees to work on seems to be 3–4. The ratio of left/stayed is very small for these cohorts.
+1. **Two distinct groups among those who left**:
+   - **Group A**: Employees who worked **significantly fewer hours** than peers with the same number of projects. It's possible that some of these individuals were let go, or they had already resigned and were given lighter workloads before departure.
+   - **Group B**: Employees who worked **significantly more hours** than their peers. These individuals may have quit voluntarily due to burnout or feeling overburdened, especially if they were top contributors.
 
-4. If we assume a work week of 40 hours and two weeks of vacation per year, then the average number of working hours per month of employees working Monday–Friday `= 50 weeks * 40 hours per week / 12 months = 166.67 hours per month`. This means that, aside from the employees who worked on two projects, every group—even those who didn't leave the company—worked considerably more hours than this. It seems that employees here are overworked.   
-   
-As the next step, we could confirm that all employees with seven projects left.
+2. **Extreme attrition among employees with high project counts**:
+   - Every employee with **seven projects** left the company.
+   - For those with **six or seven projects**, the interquartile range of monthly hours was approximately **255–295 hours**, which is well above normal work expectations.
+
+3. **Project load of 3–4 appears optimal**:
+   - Employees in these groups had the **lowest attrition rate**, suggesting a more sustainable workload.
+
+4. **Overwork across all groups**:
+   - Assuming a standard work schedule of **40 hours per week** with **two weeks vacation annually**, the average monthly working hours would be:
+     
+     \[
+     (50 \text{ weeks} \times 40 \text{ hours/week}) / 12 = 166.67 \text{ hours/month}
+     \]
+     
+   - With the exception of employees working on two projects, **every group**—even among those who stayed—**exceeded this threshold**, indicating a culture of overwork.
+
+---
+
+
+To confirm our observations, let's specifically verify whether **all employees with seven projects** indeed left the company.
+
 
 
 ```python
@@ -980,9 +997,23 @@ df1[df1['number_project']==7]['left'].value_counts()
 
 
 
-This confirms that all employees with 7 projects did leave.    
-     
-Next, we could examine the average monthly hours versus the satisfaction levels.
+
+
+This confirms that **all employees with 7 projects** indeed left the company.
+
+
+###  Exploring Satisfaction vs. Average Monthly Hours
+
+As the next step, let’s examine the relationship between **average monthly working hours** and **employee satisfaction levels**.
+
+This analysis will help us understand:
+
+- Whether employees who work significantly more or fewer hours tend to report lower satisfaction.
+- If there is a “sweet spot” in terms of working hours that aligns with higher satisfaction.
+- Whether extreme workloads (both under- and over-engagement) contribute to dissatisfaction and attrition.
+
+A scatter plot or density plot could help reveal potential clusters or trends in this relationship.
+
 
 
 ```python
@@ -999,15 +1030,32 @@ plt.title('Monthly hours by last evaluation score', fontsize='14');
 ![output_52_0](https://github.com/ImanBrjn/python_Salifort_Motors/assets/140934258/e742a8b4-d9ed-4ac4-881d-ecb383921741)   
 
 
-The scatterplot above shows that there was a sizeable group of employees who worked around 240–315 hours per month. 315 hours per month is over 75 hours per week for a whole year. It's likely this is related to their satisfaction levels being close to zero.   
+The scatter plot above reveals several important patterns:
 
-The plot also shows another group of people who left, those who had more normal working hours. Even so, their satisfaction was only around 0.4. It's difficult to speculate about why they might have left. It's possible they felt pressured to work more, considering so many of their peers worked more. And that pressure could have lowered their satisfaction levels.   
+1. **Overworked Employees with Low Satisfaction**  
+   There is a sizeable group of employees who worked around **240–315 hours per month**.  
+   > _315 hours per month_ translates to **over 75 hours per week**, sustained across a full year.  
+   It's not surprising that many employees in this group had **satisfaction levels close to zero**—a clear indicator of burnout or overwork.
 
-Finally, there is a group who worked around 210–280 hours per month, and they had satisfaction levels ranging around 0.7–0.9.   
+2. **Moderate Hours, Moderate Dissatisfaction**  
+   Another group of employees who left worked **more typical hours** but still had relatively **low satisfaction (~0.4)**.  
+   While it's harder to pinpoint the exact reason, it's possible that they felt **pressured** to work more, especially if surrounded by peers with significantly higher workloads. This perceived pressure may have contributed to their dissatisfaction and eventual departure.
 
-The strange shape of the distributions is indicative of data manipulation or synthetic data.   
+3. **High Satisfaction Amongst Reasonably Worked Employees**  
+   A third group of employees worked **210–280 hours per month** and reported **higher satisfaction levels (~0.7–0.9)**. This suggests that maintaining a healthy workload is positively associated with job satisfaction.
+
+4. **Odd Distribution Patterns**  
+   The strange shapes and sharp boundaries observed in the data may indicate **synthetic data generation** or possible **data manipulation**. This is something to keep in mind when interpreting results.
+
    
-For the next visualization, it might be interesting to visualize satisfaction levels by tenure.
+###  Visualizing Satisfaction by Tenure
+
+As a next step, it would be insightful to explore how **satisfaction levels change with tenure**—i.e., the number of years an employee has been at the company.
+
+This can help answer questions like:
+
+- Do longer-serving employees tend to be more or less satisfied?
+- Is there a specific point in time (e.g., year 3 or year 5) when satisfaction dips?
 
 
 ```python
@@ -1033,13 +1081,26 @@ plt.show();
 ![output_54_0](https://github.com/ImanBrjn/python_Salifort_Motors/assets/140934258/549e8780-2593-4cc3-ab2d-53df2e5bbbe3)   
 
 
-There are many observations we could make from this plot.   
-- Employees who left fall into two general categories: dissatisfied employees with shorter tenures and very satisfied employees with medium-length tenures.   
-- Four-year employees who left seem to have an unusually low satisfaction level. It's worth investigating changes to company policy that might have affected people specifically at the four-year mark, if possible.   
-- The longest-tenured employees didn't leave. Their satisfaction levels aligned with those of newer employees who stayed.   
-- The histogram shows that there are relatively few longer-tenured employees. It's possible that they're the higher-ranking, higher-paid employees.   
-   
-As the next step in analyzing the data, we could calculate the mean and median satisfaction scores of employees who left and those who didn't.
+This visualization offers several interesting insights:
+
+- **Two Types of Departures**  
+  Employees who left the company generally fall into two distinct groups:  
+  1. **Dissatisfied employees with short tenures**, likely those who left early due to unmet expectations or poor fit.  
+  2. **Highly satisfied employees with medium-length tenures**, who may have left for promotions, better opportunities, or personal reasons unrelated to dissatisfaction.
+
+- **Unusual Dip at Four Years**  
+  Employees with exactly **four years of tenure** who left the company show **anomalously low satisfaction**.  
+  This could signal an internal policy change or cultural shift that specifically affected employees at this stage. If possible, it would be valuable to investigate HR or management decisions made around this point.
+
+- **Long-Tenured Employees Stayed**  
+  The longest-serving employees all **remained at the company**, and their satisfaction levels appear consistent with those of newer employees who also stayed. This may suggest a strong sense of loyalty or better alignment with company culture among senior staff.
+
+- **Skewed Tenure Distribution**  
+  The histogram indicates a **small number of long-tenured employees**. It's plausible these are **higher-level or better-compensated roles**, which could correlate with higher retention and satisfaction.
+
+###  Satisfaction Statistics by Attrition
+
+To further understand the relationship between satisfaction and attrition, we will calculate the **mean and median satisfaction scores** for employees who left and those who stayed. This will help quantify any differences in overall satisfaction levels between the two groups.
 
 
 ```python
@@ -1095,9 +1156,18 @@ df1.groupby(['left'])['satisfaction_level'].agg([np.mean,np.median])
 
 
 
-As expected, the mean and median satisfaction scores of employees who left are lower than those of employees who stayed. Interestingly, among employees who stayed, the mean satisfaction score appears to be slightly below the median score. This indicates that satisfaction levels among those who stayed might be skewed to the left.   
-   
-Next, let's examine salary levels for different tenures.
+
+
+As expected, the **mean and median satisfaction scores** of employees who left are **lower** than those of employees who stayed.
+
+Interestingly, for employees who **stayed**, the **mean satisfaction** is slightly **lower than the median**, which suggests a **left-skewed distribution**—that is, a subset of these employees have particularly low satisfaction levels, pulling the mean down. This could imply that some employees remained at the company despite being relatively dissatisfied.
+
+---
+
+###  Salary Levels by Tenure
+
+Next, we’ll explore how **salary levels vary across different tenure groups**. This may help identify whether compensation is aligned with employee experience and whether it potentially influences retention.
+
 
 
 ```python
@@ -1126,9 +1196,17 @@ ax[1].set_title('Salary histogram by tenure: long-tenured people', fontsize='14'
 
 
 
-The plots above show that long-tenured employees were not disproportionately comprised of higher-paid employees.   
-   
-Next, we could explore whether there's a correlation between working long hours and receiving high evaluation scores. Let's create a scatterplot of `average_monthly_hours` versus `last_evaluation`.
+
+The plots above show that **long-tenured employees were not disproportionately represented among the higher-paid salary groups**. This suggests that simply staying at the company for a longer time does not necessarily lead to higher pay.
+
+---
+
+### Exploring the Relationship Between Workload and Evaluation
+
+Next, let's explore whether there's a relationship between the **number of hours worked** and **performance evaluations**.
+
+We’ll create a **scatterplot of `average_monthly_hours` versus `last_evaluation`** to see if employees who work longer hours also tend to receive higher performance scores.
+
 
 
 ```python
@@ -1146,13 +1224,24 @@ plt.title('Monthly hours by last evaluation score', fontsize='14');
 
 
 
-The following observations can be made from the scatterplot above:   
-- The scatterplot indicates two groups of employees who left: overworked employees who performed very well and employees who worked slightly under the nominal monthly average of 166.67 hours with lower evaluation scores.   
-- There seems to be a correlation between hours worked and evaluation score.   
-- There isn't a high percentage of employees in the upper left quadrant of this plot; but working long hours doesn't guarantee a good evaluation score.   
-- Most of the employees in this company work well over 167 hours per month.   
-   
-Next, we could examine whether employees who worked very long hours were promoted in the last five years.
+The following observations can be made from the scatterplot above:
+
+- There appear to be **two distinct groups** of employees who left:
+  - **Overworked high performers**, who worked significantly more than average and received high evaluation scores.
+  - Employees who worked **below the nominal monthly average** (~166.67 hours) and had **lower evaluation scores**.
+  
+- There seems to be a **positive correlation** between hours worked and evaluation score — in general, employees who work more tend to be evaluated more highly.
+
+- However, the **upper-left quadrant** (high hours, low evaluation) has few data points, suggesting that **long hours do not guarantee high evaluations**.
+
+- It's also noteworthy that **most employees work well above 167 hours per month**, which may point to a culture of overwork.
+
+---
+
+###  Looking at Promotions
+
+As the next step, let's examine whether employees who worked very long hours were **promoted in the last five years**. This can help assess whether high workload is rewarded with career advancement.
+
 
 
 ```python
@@ -1170,12 +1259,21 @@ plt.title('Monthly hours by promotion last 5 years', fontsize='14');
 
 
 
-The plot above shows the following:
-- very few employees who were promoted in the last five years left   
-- very few employees who worked the most hours were promoted   
-- all of the employees who left were working the longest hours     
-   
-Next, we could inspect how the employees who left are distributed across departments.
+
+The plot above reveals several important insights:
+
+- **Very few employees who were promoted in the last five years ended up leaving** the company. This suggests that promotions may be a strong retention factor.
+
+- Among those who **worked the most hours**, **very few were promoted**, indicating that working long hours does not necessarily lead to promotion.
+
+- Interestingly, **all of the employees who left were among those working the longest hours**, reinforcing the idea that overwork may be linked to attrition.
+
+---
+
+###  Department-Level Attrition Analysis
+
+Next, let's inspect how employees who left are distributed across **different departments**. This can help identify specific areas with higher attrition rates and may reveal organizational patterns or management issues.
+
 
 
 ```python
@@ -1215,10 +1313,14 @@ plt.title('Counts of stayed/left by department', fontsize=14);
 ![output_65_0](https://github.com/ImanBrjn/python_Salifort_Motors/assets/140934258/5eed937a-611f-43b7-a708-5141967c29e3)   
 
 
+The bar chart suggests that **no single department stands out** as having a significantly higher or lower proportion of employees who left versus those who stayed. This implies that attrition may be **driven more by individual factors** (such as workload, satisfaction, or promotion) than by departmental culture or structure.
 
-There doesn't seem to be any department that differs significantly in its proportion of employees who left to those who stayed.   
-   
-Lastly, let's check for strong correlations between variables in the data.
+---
+
+###  Correlation Analysis
+
+Lastly, let’s check for **strong correlations** between variables in the dataset. This will help us identify which features might be most predictive of employee attrition and guide future modeling efforts.
+
 
 
 ```python
@@ -1233,32 +1335,47 @@ heatmap.set_title('Correlation Heatmap', fontdict={'fontsize':14}, pad=12);
 
 
 
-The correlation heatmap confirms that the number of projects, monthly hours, and evaluation scores all have some positive correlation with each other. Additionally, whether an employee leaves is negatively correlated with their satisfaction level.
+The correlation heatmap confirmed several key relationships:
 
-### Insights
+- 📈 **Positive Correlation**: `number_project`, `average_monthly_hours`, and `last_evaluation` are positively correlated, suggesting employees who work on more projects tend to work longer hours and may receive higher evaluations.
+- 📉 **Negative Correlation**: The variable `satisfaction_level` shows a clear negative correlation with the target variable `left`, confirming that less satisfied employees are more likely to leave.
 
-It appears that employees are leaving the company as a result of poor management. Leaving is tied to longer working hours, many projects, and generally lower satisfaction levels. It can be ungratifying to work long hours and not receive promotions or good evaluation scores. There's a sizeable group of employees at this company who are probably burned out. It also appears that if an employee has spent more than six years at the company, they tend not to leave. 
+---
 
-# paCe: Construct Stage
+### 💡 Insights
 
-In this stage, the appropriate models are determined, the model is constructed, model assumptions are confirmed, and the model results are evaluated to determine how well it fits the data.
+The exploratory data analysis reveals several likely causes of employee attrition:
 
+- 🚫 **Poor Management & Burnout**: High number of projects and long work hours without corresponding promotions or recognition correlate with attrition.
+- ⚠️ **Burned-Out High Performers**: Many high-evaluation employees working excessive hours still chose to leave, possibly due to burnout or lack of advancement.
+- 📉 **Low Satisfaction**: The strongest predictor of employee exit appears to be low satisfaction.
+- 🧓 **Tenure Effect**: Employees who have stayed beyond six years are significantly more likely to remain at the company, possibly due to reaching senior or less stressful roles.
 
-## Step 3 and 4. Model Building and Results and Evaluation
+---
 
-### Identifing the type of prediction task.
+# 🧱 paCe: Construct Stage
 
-My goal is to predict whether an employee leaves the company, which is a categorical outcome variable. This task involves classification, specifically binary classification, as the outcome variable `left` can be either 1 (indicating the employee left) or 0 (indicating the employee didn't leave).
+## Step 3 & 4. Model Building and Evaluation
 
-### Identifing the types of models most appropriate for this task.
+### Predictive Task: Binary Classification
 
-Since the variable we want to predict (whether an employee leaves the company) is categorical, we could either build a Logistic Regression model, or a Tree-based Machine Learning model.
+Our goal is to predict **employee attrition** (i.e., whether an employee left the company). This is a **binary classification** problem where:
 
+- `1` = Employee left
+- `0` = Employee stayed
 
-### Modeling Approach: Tree-based Model
-This approach covers implementation of Decision Tree and Random Forest.
+---
 
-Starting with isolating the outcome variable.
+### Model Selection
+
+Since our target variable is binary, appropriate models include:
+
+- **Logistic Regression** – a simple, interpretable baseline model.
+- **Decision Tree** – a tree-based model that allows interpretability.
+- **Random Forest** – an ensemble of trees that improves accuracy and generalizability.
+
+We will begin by isolating the **target variable** and preparing the data for modeling.
+
 
 
 
