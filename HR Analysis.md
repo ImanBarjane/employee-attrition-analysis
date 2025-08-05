@@ -1578,7 +1578,7 @@ X.head()
 
 
 
-Lastly, spliting the data into training, validating, and testing sets.
+Lastly, the dataset is split into training, validation, and testing sets to prepare for model training and evaluation.
 
 
 ```python
@@ -1586,8 +1586,9 @@ Lastly, spliting the data into training, validating, and testing sets.
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, stratify=y, random_state=0)
 ```
 
-#### Decision tree - Round 1
-Constructing a decision tree model and set up cross-validated grid-search to exhuastively search for the best model parameters.
+####  Decision Tree - Round 1
+
+We start by constructing a Decision Tree model and setting up a cross-validated grid search to exhaustively find the best model parameters.
 
 
 ```python
@@ -1674,9 +1675,10 @@ tree1.best_score_
 
 
 
-This is a strong AUC score, which shows that this model can predict employees who will leave very well.
+This is a strong AUC score, indicating that the model performs well in predicting which employees are likely to leave.
 
-Next, we can write a function that will help extract all the scores from the grid search.
+Next, we’ll write a function to extract all the scores from the grid search results.
+
 
 
 ```python
@@ -1774,12 +1776,13 @@ tree1_cv_results
 
 
 
-All of these scores from the decision tree model are strong indicators of good model performance. 
+All of the scores from the decision tree model indicate strong overall performance.
 
-We could construct a random forest model next.   
+Next, we’ll construct a random forest model.
 
-#### Random forest - Round 1
-Constructing a random forest model and set up cross-validated grid-search to exhuastively search for the best model parameters.
+####  Random Forest - Round 1  
+Building a random forest model and setting up a cross-validated grid search to exhaustively find the best model parameters.
+
 
 
 ```python
@@ -1945,9 +1948,10 @@ print(rf1_cv_results)
     0  random forest cv   0.950023  0.915614  0.932467  0.977983  0.980425
 
 
-The evaluation scores of the random forest model are better than those of the decision tree model, with the exception of recall (the recall score of the random forest model is approximately 0.001 lower, which is a negligible amount). This indicates that the random forest model mostly outperforms the decision tree model.
+The evaluation scores of the random forest model are better than those of the decision tree model — with the exception of recall, which is only about 0.001 lower (a negligible difference). This suggests that the random forest model generally outperforms the decision tree.
 
-Next, we can define a function that gets all the scores from a model's predictions.
+Next, we’ll define a function to extract all the evaluation scores from a model’s predictions.
+
 
 
 ```python
@@ -1983,7 +1987,7 @@ def get_scores(model_name:str, model, X_test_data, y_test_data):
     return table
 ```
 
-Now let's use the best performing model to predict on the test set.
+Now we use the best performing model to predict on the test set.
 
 
 ```python
@@ -2037,16 +2041,18 @@ rf1_test_scores
 
 
 
-The test scores are very similar to the validation scores, which is good. This appears to be a strong model. Since this test set was only used for this model, we can be more confident that the model's performance on this data is representative of how it will perform on new, unseeen data.
+The test scores closely match the validation scores, which is a positive sign. This suggests that the model generalizes well, and since the test set was used exclusively for this evaluation, we can be more confident that the model’s performance on unseen data will be similar.
 
 #### Feature Engineering
-I am skeptical of the high evaluation scores. There is a chance that there is some data leakage occurring. Data leakage is when we use data to train the model that should not be used during training, either because it appears in the test data or because it's not data that I'd expect to have when the model is actually deployed. Training a model with leaked data can give an unrealistic score that is not replicated in production.
 
-In this case, it's likely that the company won't have satisfaction levels reported for all of its employees. It's also possible that the `average_monthly_hours` column is a source of some data leakage. If employees have already decided upon quitting, or have already been identified by management as people to be fired, they may be working fewer hours. 
+I’m somewhat skeptical of the high evaluation scores — there may be some degree of data leakage. Data leakage occurs when the model is trained using information that it wouldn’t realistically have access to at prediction time. This often results in overly optimistic performance that won’t hold in production.
 
-The first round of decision tree and random forest models included all variables as features. This next round will incorporate feature engineering to build improved models. 
+In this case, the company might not consistently have up-to-date satisfaction scores for all employees. Additionally, the `average_monthly_hours` variable could also be problematic. For example, employees planning to quit or identified for termination may start working fewer hours, introducing a bias that inflates model performance.
 
-I will proceed by dropping `satisfaction_level` and creating a new feature that roughly captures whether an employee is overworked. I call this new feature `overworked`. It will be a binary variable.
+The initial decision tree and random forest models used all available variables as features. In this next round, I’ll introduce some feature engineering to help the model generalize better.
+
+Specifically, I’ll drop the `satisfaction_level` variable and create a new binary feature called `overworked`, which captures whether an employee is putting in significantly more hours than average.
+
 
 
 ```python
@@ -2224,13 +2230,15 @@ print('Min hours:', df2['overworked'].min())
     Min hours: 96
 
 
-166.67 is approximately the average number of monthly hours for someone who works 50 weeks per year, 5 days per week, 8 hours per day.    
+An average monthly workload of **166.67 hours** corresponds to someone working 8 hours a day, 5 days a week, for 50 weeks in a year.
 
-We will define being overworked as working more than 175 hours per month on average.   
-   
-To make the `overworked` column binary, we can reassign the column using a boolean mask.
-- `df3['overworked'] > 175` creates a series of booleans, consisting of `True` for every value > 175 and `False` for every values ≤ 175
-- `.astype(int)` converts all `True` to `1` and all `False` to `0` 
+To define overwork, we'll set a threshold: employees working more than **175 hours per month** on average will be considered **overworked**.
+
+We will create a new binary column, `overworked`, using a boolean mask:
+
+- `df3['average_monthly_hours'] > 175` returns a series of boolean values (`True` for hours over 175, `False` otherwise).
+- Applying `.astype(int)` converts these boolean values into `1` (overworked) and `0` (not overworked).
+
 
 
 ```python
