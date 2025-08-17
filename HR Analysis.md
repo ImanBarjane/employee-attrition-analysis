@@ -2529,9 +2529,9 @@ tree2.best_score_
 
 
 
-This model performs very well, even without satisfaction levels and detailed hours worked data.   
-   
-Next, checking the other scores.
+This model performs strongly, even after excluding satisfaction levels and granular hours-worked features.
+
+Next, we will review the remaining evaluation metrics.
 
 
 ```python
@@ -2547,7 +2547,7 @@ print(tree2_cv_results)
     0  decision tree2 cv   0.856693  0.903553  0.878882  0.958523  0.958675
 
 
-Some of the other scores fell. That's to be expected given fewer features were taken into account in this round of the model. Still, the scores are very good.
+Some of the evaluation scores have decreased, which is expected since this model was trained with fewer features. However, the scores remain strong, indicating that the model still performs well despite the reduction in input data.
 
 #### Random forest - Round 2
 
@@ -2637,7 +2637,7 @@ print(rf2_cv_results)
     0  random forest2 cv   0.866758  0.878754  0.872407  0.957411  0.96481
 
 
-Again, the scores dropped slightly, but the random forest performs better than the decision tree if using AUC as the deciding metric. 
+Once again, the scores decreased slightly. However, when using AUC as the primary metric, the random forest outperforms the decision tree.
 
 
 
@@ -2692,9 +2692,9 @@ rf2_test_scores
 
 
 
-This seems to be a stable, well-performing final model. 
+This appears to be a stable and well-performing final model.  
 
-Let's plot a confusion matrix to visualize how well it predicts on the test set.
+Next, let's plot a confusion matrix to visualize its predictive performance on the test set.
 
 
 ```python
@@ -2712,9 +2712,10 @@ disp.plot(values_format='');
 ![output_145_0](https://github.com/ImanBrjn/python_Salifort_Motors/assets/140934258/1062ba99-dcad-43e6-b29d-6661fe082047)    
 
 
-The model predicts more false positives than false negatives, which means that some employees may be identified as at risk of quitting or getting fired, when that's actually not the case. But this is still a strong model.
+The model predicts more false positives than false negatives. This means that some employees may be incorrectly flagged as at risk of quitting or being fired, when in fact they are not. Nonetheless, the model still demonstrates strong overall performance.  
 
-For exploratory purpose, I want to inspect the splits of the decision tree model and the most important features in the random forest model. 
+For exploratory purposes, I now want to examine the decision tree model’s splits and identify the most important features in the random forest model.  
+
 
 #### Decision tree splits
 
@@ -2837,11 +2838,12 @@ plt.show()
 
 
 
-The barplot above shows that in this decision tree model, `last_evaluation`, `number_project`, `tenure`, and `overworked` have the highest importance, in that order. These variables are most helpful in predicting the outcome variable, `left`.
+The bar plot above shows that in this decision tree model, `last_evaluation`, `number_project`, `tenure`, and `overworked` are the most important features, in that order. These variables contribute the most to predicting the target variable, `left`.  
 
-#### Random forest feature importance
+####  Random Forest Feature Importance  
 
-Now, let's plot the feature importances for the random forest model.
+Next, let's visualize the feature importances for the random forest model.  
+
 
 
 ```python
@@ -2876,40 +2878,50 @@ plt.show()
 
 
 
-The plot above shows that in this random forest model, `last_evaluation`, `number_project`, `tenure`, and `overworked` have the highest importance, in that order. These variables are most helpful in predicting the outcome variable, `left`, and they are the same as the ones used by the decision tree model.
+The plot above shows that in this random forest model, `last_evaluation`, `number_project`, `tenure`, and `overworked` are the most important features, in that order. These variables are the most helpful in predicting the target variable, `left`, and they match the key predictors identified by the decision tree model.  
 
-# pacE: Execute Stage
+---
 
-## Recall evaluation metrics
+# pacE: Execute Stage  
 
-- **AUC** is the area under the ROC curve; it's also considered the probability that the model ranks a random positive example more highly than a random negative example.
-- **Precision** measures the proportion of data points predicted as True that are actually True, in other words, the proportion of positive predictions that are true positives.
-- **Recall** measures the proportion of data points that are predicted as True, out of all the data points that are actually True. In other words, it measures the proportion of positives that are correctly classified.
-- **Accuracy** measures the proportion of data points that are correctly classified.
-- **F1-score** is an aggregation of precision and recall.
+## Recall of Evaluation Metrics  
 
+- **AUC**: The area under the ROC curve, interpreted as the probability that the model ranks a randomly chosen positive example higher than a randomly chosen negative example.  
+- **Precision**: The proportion of predicted positives that are actually true positives.  
+- **Recall**: The proportion of actual positives that are correctly identified by the model.  
+- **Accuracy**: The overall proportion of correctly classified data points.  
+- **F1-score**: The harmonic mean of precision and recall, providing a balanced measure of the two.  
 
-## Step 4. Results and Evaluation
+---
 
-### Summary of model results
-After conducting feature engineering, the decision tree model achieved AUC of 93.8%, precision of 87.0%, recall of 90.4%, f1-score of 88.7%, and accuracy of 96.2%, on the test set. The random forest modestly outperformed the decision tree model. 
+## Step 4. Results and Evaluation  
 
-### Conclusion and Recommendations
+### Summary of Model Results  
+After incorporating feature engineering, the **decision tree model** achieved:  
+- **AUC**: 93.8%  
+- **Precision**: 87.0%  
+- **Recall**: 90.4%  
+- **F1-score**: 88.7%  
+- **Accuracy**: 96.2%  
 
-The models and the feature importances extracted from the models confirm that employees at the company are overworked. 
+The **random forest model** modestly outperformed the decision tree across most metrics.  
 
-To retain employees, the following recommendations could be presented to the stakeholders:
+---
 
-* Cap the number of projects that employees can work on.
-* Consider promoting employees who have been with the company for atleast four years, or conduct further investigation about why four-year tenured employees are so dissatisfied. 
-* Either reward employees for working longer hours, or don't require them to do so. 
-* If employees aren't familiar with the company's overtime pay policies, inform them about this. If the expectations around workload and time off aren't explicit, make them clear. 
-* Hold company-wide and within-team discussions to understand and address the company work culture, across the board and in specific contexts. 
-* High evaluation scores should not be reserved for employees who work 200+ hours per month. Consider a proportionate scale for rewarding employees who contribute more/put in more effort. 
+## Conclusion and Recommendations  
 
+The models and their feature importances strongly suggest that **employee overwork is a primary factor contributing to attrition**. To improve employee retention, the following recommendations can be shared with stakeholders:  
 
+* Cap the number of projects employees are assigned.  
+* Consider promoting employees who have been with the company for at least four years, or investigate further why four-year-tenured employees are more dissatisfied.  
+* Either reward employees who work longer hours or avoid requiring them to consistently do so.  
+* Ensure employees are fully aware of the company’s overtime policies. Clarify expectations regarding workload, overtime, and time off.  
+* Facilitate company-wide and team-level discussions to better understand and improve workplace culture.  
+* Reconsider how performance evaluations are structured. High scores should not be limited to employees working 200+ hours per month. Instead, adopt a proportionate recognition system that fairly rewards contributions and effort.  
 
-**Thank you for taking the time to read my Capstone Project!**
+---
+
+**Thank you for taking the time to read my Capstone Project!**  
 
 
 ## 🔗 Resources and Troubleshooting
